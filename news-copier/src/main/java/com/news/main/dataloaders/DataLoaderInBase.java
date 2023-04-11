@@ -34,7 +34,7 @@ public class DataLoaderInBase {
 			
 			for (News news : parser.parseVKPostToNews()) {
 				Comment comment = new Comment();
-				comment.setBody("ГОВНО");
+				comment.setBody("Пример комментария");
 				comment.setUser_table(admin);
 				comment.setNews(news);
 				newsRepo.save(news);
