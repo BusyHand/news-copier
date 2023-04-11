@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+<div th:insert="part/common.html :: #head-part"></div>
+</head>
+<body>
+	<div class="container">
+		<div th:insert="part/navbar.html :: #menu"></div>
+
+		<div class="modal modal-signin position-static d-block py-5"
+			tabindex="-1" role="dialog" id="modalSignin">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content rounded-4 shadow">
+					<div class="modal-header p-5 pb-4 border-bottom-0">
+						<!-- <h5 class="modal-title">Modal title</h5> -->
+						<h2 class="fw-bold mb-0">Registration</h2>
+						<a href="/login">
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</a>
+					</div>
+					<div class="modal-body p-5 pt-0">
+
+						<form class="needs-validation" method="POST"
+							th:action="@{/registration}" th:object="${form}" novalidate>
+
+							<div class="form-floating mb-3">
+								<input type="text" name="username"
+									class="form-control rounded-3" id="floatingInput"
+									placeholder="name@example.com">
+								<label for="floatingInput">User name</label>
+							</div>
+							<div class="mb-3">
+								<span th:if="${#fields.hasErrors('username')}"
+									class="validationError text-danger" th:errors="*{username}">1234</span>
+							</div>
+
+
+							<div class="form-floating mb-3 input-group">
+								<input type="password" name="password"
+									class="form-control rounded-3 need_mergin_left_1px"
+									id="floatingInput" placeholder="name@example.com">
+								<input type="password" name="confirm"
+									class="form-control rounded-3" id="floatingPassword"
+									placeholder="Password">
+								<label for="floatingPassword">Password and confirm</label>
+							</div>
+							<div class="mb-3">
+								<span class="validationError text-danger"
+									th:if="${#fields.hasErrors('password')}"
+									th:errors="*{password}">1234</span>
+								<span class="validationError text-danger"
+									th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">1234</span>
+							</div>
+
+
+							<div class="form-floating mb-3">
+								<input type="text" name="email" class="form-control rounded-3"
+									id="floatingPassword" placeholder="Password">
+								<label for="floatingPassword">Email</label>
+							</div>
+							<div class="mb-3">
+								<span th:if="${#fields.hasErrors('email')}"
+									class="validationError text-danger" th:errors="*{email}">1234</span>
+							</div>
+
+
+							<div class="form-floating mb-3">
+								<input type="text" name="phone" class="form-control rounded-3"
+									id="floatingPassword" placeholder="Password">
+								<label for="floatingPassword">Phone</label>
+							</div>
+							<div class="mb-3">
+								<span th:if="${#fields.hasErrors('phone')}"
+									class="validationError text-danger" th:errors="*{phone}">1234</span>
+							</div>
+
+
+							<button
+								class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-primary"
+								type="submit">Registration</button>
+							<small class="text-muted">By clicking button, you agree
+								to the terms of use.</small>
+							<hr class="my-4">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:insert="part/common.html :: #script-part"></div>
+		<div th:insert="part/common.html :: #footer"></div>
+	</div>
+</body>
+</html>

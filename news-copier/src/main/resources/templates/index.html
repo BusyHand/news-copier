@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+<div th:insert="part/common.html :: #head-part"></div>
+
+</head>
+<body>
+
+
+
+	<div class="container">
+		<div th:insert="part/navbar.html :: #menu"></div>
+
+		<main>
+
+			<div class="carousel-inner mb-4">
+				<div class="carousel-item active">
+					<img class="index_welcome"
+						th:src="@{/images/indexWelcomeImage.jpeg}" height="400px"
+						width="100%" alt="img">
+					<div class="carousel-caption text-start d-none d-md-block">
+						<h1 class="display-4 fst-italic"> Admin login: a, password: a</h1>
+						<p class="lead my-3">Offer not work =(</p>
+						<p>
+							<a class="btn btn-lg btn-primary" href="#">Offer news</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row row-cols-1 row-cols-md-3 g-4"
+				data-masonry='{"percentPosition": true }'>
+				<div th:replace="part/common.html :: frag (${news})">...</div>
+			</div>
+
+
+		</main>
+		<div th:insert="part/common.html :: #footer"></div>
+		<div th:insert="part/common.html :: #script-part"></div>
+	</div>
+</body>
+</html>

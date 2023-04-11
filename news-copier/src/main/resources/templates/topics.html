@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+<div th:insert="part/common.html :: #head-part"></div>
+</head>
+<body>
+	<div class="container">
+		<div th:insert="part/navbar.html :: #menu"></div>
+		<main>
+			<div class="row row-cols-1 row-cols-md-3 g-4"
+				data-masonry='{"percentPosition": true }'>
+				<div th:replace="part/common.html :: frag (${news})">...</div>
+
+			</div>
+		</main>
+		<div th:insert="part/common.html :: #script-part"></div>
+		<div th:insert="part/common.html :: #footer"></div>
+	</div>
+</body>
+</html>

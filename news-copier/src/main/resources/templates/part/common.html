@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+	crossorigin="anonymous">
+<link href="/style.css" rel="stylesheet" />
+
+</head>
+<body>
+
+	<div id="head-part">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+			crossorigin="anonymous">
+		<link href="/style.css" rel="stylesheet" />
+
+	</div>
+
+
+	<div th:fragment="frag (important)" class="col"
+		th:each="news : ${important}">
+		<div class="card my-2 mx-3 hover_imgs shadow">
+			<a th:href="@{'/news/' + ${news.id}}">
+				<figure>
+					<img th:if="${news.listImgsIsNotEmpty}"
+						th:src="${news.getFirstImg}" class="card-img-top">
+				</figure>
+			</a>
+			<div class="card-body ">
+				<a class="links link-dark" th:href="@{'/news/' + ${news.id}}">
+					<h3 class="links card-title text-center" th:text="${news.head}"></h3>
+				</a>
+				<div class="card-text lead p-3 text-center">
+					<a th:text="${news.previewBody}"></a>
+
+				</div>
+				<div class="card-footer bg-transparent border-0 text-end ">
+					<small class="text-muted" th:text="${news.getFormaterDate}"></small>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="comments_on_profile (comments)" class="col "
+		th:each="comment : ${comments}">
+		<div class="card my-2 mx-3 hover_imgs shadow">
+			<div class="card-body ">
+				<a class="links link-dark"
+					th:href="@{'/news/' + ${comment.news.id}}">
+					<h5 class="links card-title text-center"
+						th:text="${comment.news.head}"></h5>
+				</a>
+				<div class="card-text lead p-3">
+					<div th:each="text : ${comment.getEditBody()}">
+						<p>
+							<a th:text="${text}">Source</a>
+						</p>
+					</div>
+				</div>
+				<div class="card-footer bg-transparent border-0 text-end ">
+					<div sec:authorize="hasRole('ROLE_ADMIN')">
+						<a class="btn btn-sm btn-outline-secondary"
+							th:href="@{'/profile/delete/comment/' + ${comment.id}}">Delete</a>
+					</div>
+					<small class="text-muted" th:text="${comment.getFormaterDate()}"></small>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:fragment="corousel_imgs (news)">
+
+		<div id="carouselExampleControls" class="carousel slide"
+			data-bs-ride="carousel">
+
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img class="on_news" th:src="${news.getFirstImg}" width="600px">
+				</div>
+				<div th:replace="part/common.html :: loop_imgs (${news})">...</div>
+			</div>
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</div>
+
+	<div th:fragment="loop_imgs (news)">
+		<div th:each="image : ${news.getWithoutFirstImg}">
+			<div class="carousel-item">
+				<img class="on_news" th:src="${image}" width="600px">
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="corousel_imgs_width (news)">
+
+		<div id="carouselExampleControls" class="carousel slide"
+			data-bs-ride="carousel">
+
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img class="on_news" th:src="${news.getFirstImg}" width="380px">
+				</div>
+				<div th:replace="part/common.html :: loop_imgs_width (${news})">...</div>
+			</div>
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</div>
+
+	<div th:fragment="loop_imgs_width (news)">
+		<div th:each="image : ${news.getWithoutFirstImg}">
+			<div class="carousel-item">
+				<img class="on_news" th:src="${image}" width="380px">
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="corousel_imgs_width_center (news)">
+
+		<div id="carouselExampleControls" class="carousel slide"
+			data-bs-ride="carousel">
+
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img class="on_news" th:src="${news.getFirstImg}" width="800px">
+				</div>
+				<div
+					th:replace="part/common.html :: loop_imgs_width_center (${news})">...</div>
+			</div>
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#carouselExampleControls" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</div>
+
+	<div th:fragment="loop_imgs_width_center (news)">
+		<div th:each="image : ${news.getWithoutFirstImg}">
+			<div class="carousel-item">
+				<img class="on_news" th:src="${image}" width="800px">
+			</div>
+		</div>
+	</div>
+
+	<div id="script-part">
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+			integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+			integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+			integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D"
+			crossorigin="anonymous" async></script>
+	</div>
+
+	<div id="footer">
+		<footer class="py-3 my-4">
+			<ul class="nav justify-content-center border-bottom pb-3 mb-3">
+				<li class="nav-item">
+					<a href="#" class="nav-link px-2 text-muted">Up to page</a>
+				</li>
+			</ul>
+			<p class="text-center text-muted">CCcC company, 2000</p>
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>News</title>
+<div th:insert="part/common.html :: #head-part"></div>
+<link href="/style.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+
+		<div th:insert="part/navbar.html :: #menu"></div>
+
+
+		<div class="card border-0" th:object="${newsById}">
+			<div class="card-header border-0 my-4 p-3 bg-transparent text-center">
+
+				<h1 class="display-6 " th:text="${newsById.head}"></h1>
+				<div class=" "
+					th:if="${(#authorization.expression('hasRole(''ROLE_MANAGER'')') && #strings.equals(#authentication.name, newsById.author)) 
+			          || #authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+					th:insert="part/newsForm.html :: #EditButton"></div>
+			</div>
+			<div class="card-body">
+
+				<div th:if="${newsById.isBodyPresentOnPageNews}">
+					<div class="imgs" th:if="${newsById.listImgsIsNotEmpty}">
+						<div th:if="${newsById.isImgsSizeOne}">
+							<img class="on_news" th:src="${newsById.getFirstImg}"
+								width="600px" alt="img">
+						</div>
+						<div th:unless="${newsById.isImgsSizeOne}">
+							<div th:replace="part/common.html :: corousel_imgs (${newsById})"></div>
+						</div>
+					</div>
+				</div>
+				<div th:unless="${newsById.isBodyPresentOnPageNews}">
+					<div class="imgs_on_center" th:if="${newsById.listImgsIsNotEmpty}">
+						<div th:if="${newsById.isImgsSizeOne}">
+							<img class="on_news" th:src="@{${newsById.getFirstImg}}"
+								width="800px" alt="img">
+						</div>
+						<div th:unless="${newsById.isImgsSizeOne}">
+							<div
+								th:replace="part/common.html :: corousel_imgs_width_center (${newsById})"></div>
+						</div>
+					</div>
+				</div>
+
+				<div th:if="${newsById.isBodyPresentOnPageNews}">
+					<div th:each="text : ${newsById.getEditBody}">
+						<div th:unless="${#strings.equals(text, '  |VIDEO PART|  ')}">
+							<p class="main_text card-text lead p-3">
+								<em> <a th:text="${text}">Source</a>
+								</em>
+							</p>
+						</div>
+						<div
+							th:if="${#strings.equals(text, '  |VIDEO PART|  ') && newsById.isVideoNotEmpty}">
+							<iframe th:src="${newsById.getVideo}" title="YouTube video"></iframe>
+						</div>
+					</div>
+					<hr class="" />
+				</div>
+			</div>
+
+			<div class="card-footer bg-transparent p-5">
+				<div class="row justify-content-md-center">
+					<div class="col-md-auto">
+						<strong>Description:</strong>
+					</div>
+					<div class="col-md-auto">
+						<strong>Author:</strong> <a class="link-secondary"
+							th:href="@{'/profile/' + ${newsById.author}}"
+							th:text="${newsById.author}"></a>
+					</div>
+					<div class="col-md-auto">
+						<strong>Topic:</strong> <a th:text="${newsById.topics}"></a>
+					</div>
+					<div class="col-md-auto">
+						<strong>Source:</strong> <a th:href="@{${newsById.sources}}">Link</a>
+					</div>
+					<div class="col-md-auto">
+						<strong>Create at:</strong> <a
+							th:text="${newsById.getFormaterDate}"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="comment" class="container p-5">
+			<div th:object="${newsById}"
+				class="row d-flex justify-content-center">
+				<div class="col-md-8 col-lg-8">
+					<div class="card text-dark shadow">
+
+						<div class="card-header mt-5 p-4 border-0 bg-transparent">
+
+							<div sec:authorize="isAuthenticated()">
+								<h4 class="mb-0 ">Leave your comment here</h4>
+								<p class="fw-light ">250 symbols limit</p>
+								<form method="POST"
+									th:action="@{'/news/make/' + ${newsById.id}}">
+									<div class="input-group mb-3">
+										<textarea class="form-control" name="body"
+											placeholder="Leave a comment here"></textarea>
+										<button class="btn btn-outline-primary" type="submit"
+											id="button-addon2">Add Comment</button>
+									</div>
+									<div th:if="${errorMessge != null}" class="">
+										<span th:text="${errorMessge}" class="text-danger">1234</span>
+									</div>
+								</form>
+							</div>
+							<div class="row" sec:authorize="isAnonymous()">
+								<h4 class="mb-0  text-center">Sing in to leave a comment</h4>
+								<button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+									class="mt-5 btn btn-lg rounded-3 btn-outline-secondary"
+									type="submit">Sign in</button>
+
+							</div>
+							<div th:unless="${comments.size() == 0}">
+								<hr class="my-5" />
+								<h4 class=" ">Recent comments</h4>
+								<p class="fw-light ">Latest Comments section by users</p>
+							</div>
+							<div th:if="${comments.size() == 0}">
+								<hr class="my-5" />
+								<h4 class=" ">No comments yet. Be the first</h4>
+							</div>
+						</div>
+
+						<div class="card-body " th:each="comment : ${comments}">
+							<div class="d-flex flex-start">
+
+								<img class="rounded-circle shadow-1-strong me-3"
+									src="https://bootdey.com/img/Content/avatar/avatar7.png"
+									alt="avatar" width="60" height="60" />
+								<div>
+									<a th:href="@{'/profile/' + ${comment.getUsername}}"
+										th:text="${comment.getUsername}">
+										<h6 class="fw-bold mb-1"></h6>
+									</a>
+
+									<div class="d-flex align-items-center mb-3">
+										<p class="mb-0" th:text="${comment.getFormaterDate()}">
+											March 07, 2021</p>
+									</div>
+									<p class="mb-0" th:text="${comment.body}"></p>
+								</div>
+							</div>
+							<hr class="" />
+						</div>
+						<a th:if="${comments.size() == 3}" class="btn btn-outline-primary"
+							th:href="@{'/showAllComments/news/' + ${newsById.id}}">SHOW
+							MORE</a>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr class="mt-5" />
+		<h1 class="display-6 text-center my-5">Also see other news on
+			this topic</h1>
+		<div class="row row-cols-1 row-cols-md-3 g-4 mt-5 "
+			data-masonry='{"percentPosition": true }'>
+			<div th:replace="part/common.html :: frag (${anotherNewsByTopic})">...</div>
+		</div>
+
+		<div th:insert="part/common.html :: #script-part"></div>
+		<div th:insert="part/common.html :: #footer"></div>
+
+	</div>
+</body>
+</html>

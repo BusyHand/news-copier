@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "parsernews.settings.access_token",
+  "type": "java.lang.String",
+  "description": "access_token to submiting https request to vk api"
+}]}

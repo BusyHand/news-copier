@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+</head>
+<body>
+	<div id="form">
+
+		<div class="col-md-3 position-relative">
+			<div class="input-group has-validation">
+				<span class="input-group-text" id="validationTooltipUsernamePrepend">Importance</span>
+				<select th:field="*{importance}" name="important"
+					class="form-select" id="validationTooltip04" required>
+					<option selected disabled value="">Choose important...</option>
+					<option th:each="important : ${importance}" th:text="${important}"
+						th:value="${important}">...</option>
+				</select>
+				<div class="invalid-tooltip">Please select a valid state.</div>
+			</div>
+		</div>
+
+		<div class="col-md-3 position-relative">
+			<div class="input-group has-validation">
+				<span class="input-group-text" id="validationTooltipUsernamePrepend">Topic</span>
+				<select th:field="*{topics}" name="topic" class="form-select"
+					id="validationTooltip04" required>
+					<option selected disabled value="">Choose topic...</option>
+					<option th:each="topic : ${topics}" th:text="${topic}"
+						th:value="${topic}">...</option>
+				</select>
+				<div class="invalid-tooltip">Please select a valid state.</div>
+			</div>
+		</div>
+
+		<div class="col-md-5 position-relative form-floating ">
+			<input th:field="*{head}" type="text" name="head"
+				class="form-control rounded-3" id="floatingPassword"
+				placeholder="Head">
+			<label for="floatingPassword">Head</label>
+		</div>
+
+		<div class="col-md-5 position-relative form-floating ">
+			<textarea th:field="*{body}" class="form-control" name="body"
+				style="height: 100px; width: 600px"></textarea>
+			<label for="floatingTextarea2">Body</label>
+		</div>
+
+		<div class="col-md-5 position-relative form-floating ">
+			<input th:field="*{sources}" type="text" name="sources"
+				class="form-control rounded-3" id="floatingPassword"
+				placeholder="Head">
+			<label for="floatingPassword">Sources</label>
+		</div>
+
+		<div class="col-md-5 position-relative form-floating ">
+			<input th:field="*{video}" type="text" name="video"
+				class="form-control rounded-3" id="floatingPassword"
+				placeholder="Head">
+			<label for="floatingPassword">Video</label>
+		</div>
+
+		<div class="col-md-5 position-relative form-floating ">
+			<input th:field="*{imgs}" type="text" name="imgs"
+				class="form-control rounded-3" id="floatingPassword"
+				placeholder="Head">
+			<label for="floatingPassword">Imgs</label>
+		</div>
+
+
+		<div class="imgs" th:if="${news.listImgsIsNotEmpty}">
+			<div th:if="${news.isImgsSizeOne}">
+				<img th:src="${news.getFirstImg}" width="600px" alt="img">
+			</div>
+			<div th:unless="${news.isImgsSizeOne}">
+				<div th:replace="part/common.html :: corousel_imgs (${news})"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="EditButton">
+		<form method="GET" th:action="@{'/edit/' + ${newsById.id}}">
+			<input class="btn btn-outline-secondary btn-sm" type="submit"
+				value="Edit this news" />
+		</form>
+	</div>
+
+
+
+</body>
+</html>

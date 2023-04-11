@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+<div th:insert="part/common.html :: #head-part"></div>
+
+</head>
+<body>
+
+	<div class="container ">
+		<div th:insert="part/navbar.html :: #menu"></div>
+		<main >
+			<div class="row g-5 ">
+				<div class="col-md-10">
+
+					<div class="row justify-content-md-center">
+						<div class="col col-lg-10 ">
+						<h1>Search</h1>
+							<form class="mb-5" role="search" method="POST"
+								th:action="@{/archive/search/news}">
+								<input type="search" class="form-control form-control-lg border-0 shadow"
+									placeholder="Search news by title..." aria-label="Search"
+									name="head">
+							</form>
+						</div>
+					</div>
+					<div class="row row-cols-2 g-4"
+						data-masonry='{"percentPosition": true }'>
+						<div th:replace="part/common.html :: frag (${listNews})">...</div>
+					</div>
+				</div>
+				<div class="col-md-2 p-5" th:with="years=${map.keySet()}">
+					<div class="sticky-top " style="top: 100px; border-radius: 15px">
+						<h5 class="fst-italic">Archive</h5>
+						<ul class="list-unstyled mb-0"
+							th:each="yearIndex : ${#numbers.sequence(years.size() - 1, 0, -1)}">
+							<div th:with="mouths = ${map.get(years[yearIndex]).keySet()}">
+								<li class=""
+									th:each="mouthIndex : ${#numbers.sequence(mouths.size() - 1, 0, -1)}">
+									<a
+										th:href="@{'/archive/' + ${mouths[mouthIndex]} + '/' + ${years[yearIndex]}}"
+										th:text="${mouths[mouthIndex]} + ' ' + ${years[yearIndex]}"></a>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div th:insert="part/common.html :: #footer"></div>
+			<div th:insert="part/common.html :: #script-part"></div>
+		</main>
+	</div>
+</body>
+</html>

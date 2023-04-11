@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml"
+	xmlns:th="http:/ /www.thymeleaf.org">
+<head>
+<title>News</title>
+</head>
+<body>
+	<div id="menu">
+
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<!-- fixed-top -->
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">News</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li th:each="topic : ${topics}" class="nav-item">
+							<a class="nav-link" th:href="@{'/menu/' + ${topic}}"
+								th:text="${topic}">Home</a>
+						</li>
+						<li
+							sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_MANAGER')"
+							class="nav-item">
+							<a class="nav-link" th:href="@{/create}">CREATE</a>
+						</li>
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+							<a class="nav-link" th:href="@{/admin}">ADMINISTRATE</a>
+						</li>
+					</ul>
+				</div>
+				<div sec:authorize="isAuthenticated()">
+					<form method="POST" class="" th:action="@{/logout}">
+						<a class="name_user"
+							th:href="@{'/profile/' + ${#authentication.name}}"
+							th:text="${#authentication.name}"></a>
+						<div class="vr" style="margin-right: 10px;"></div>
+						<button class="btn btn-sm btn-outline-secondary" type="submit">Sign
+							Out</button>
+					</form>
+				</div>
+				<div sec:authorize="isAnonymous()">
+					<button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						class="btn btn-sm btn-outline-secondary" type="submit">Sign
+						in</button>
+				</div>
+				<a class="link-secondary" href="/archive">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+						fill="none" stroke="currentColor" stroke-linecap="round"
+						stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
+						viewBox="0 0 24 24">
+				<title>Search</title>
+				<circle cx="10.5" cy="10.5" r="7.5" />
+				<path d="M21 21l-5.2-5.2" /></svg>
+				</a>
+			</div>
+
+			<div id="staticBackdrop" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true"
+				class="modal fade " role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content rounded-4 shadow">
+						<div class="modal-header p-5 pb-4 border-bottom-0">
+							<!-- <h5 class="modal-title">Modal title</h5> -->
+							<h2 class="fw-bold mb-0">Sign in</h2>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+						<div class="modal-body p-5 pt-0">
+							<form method="POST" th:action="@{/login}" id="loginForm">
+								<div class="form-floating mb-3">
+									<input type="text" name="username"
+										class="form-control rounded-3" id="floatingInput"
+										placeholder="name@example.com">
+									<label for="floatingInput">User name</label>
+								</div>
+								<div class="form-floating mb-3">
+									<input type="password" name="password"
+										class="form-control rounded-3" id="floatingPassword"
+										placeholder="Password">
+									<label for="floatingPassword">Password</label>
+								</div>
+								<button
+									class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-primary"
+									type="submit">Sign up</button>
+								<small class="text-muted">By clicking Sign up, you agree
+									to the terms of use.</small>
+								<hr class="my-4">
+							</form>
+							<button data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+								class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-secondary"
+								type="submit">Registration</button>
+							<small class="text-muted">New here? Click button to
+								register.</small>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div tabindex="-1" role="dialog" id="staticBackdrop2"
+				data-bs-backdrop="static" data-bs-keyboard="false"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true"
+				class="modal fade ">
+				<div class="modal-dialog">
+					<div class="modal-content rounded-4 shadow">
+						<div class="modal-header p-5 pb-4 border-bottom-0">
+							<!-- <h5 class="modal-title">Modal title</h5> -->
+							<h2 class="fw-bold mb-0">Registration</h2>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body p-5 pt-0">
+
+							<form class="needs-validation" method="POST"
+								th:action="@{/registration}" novalidate>
+
+								<div class="form-floating mb-3">
+									<input type="text" name="username"
+										class="form-control rounded-3" id="floatingInput"
+										placeholder="name@example.com">
+									<label for="floatingInput">User name</label>
+								</div>
+
+								<div class="form-floating mb-3 input-group">
+									<input type="password" name="password"
+										class="form-control rounded-3 need_mergin_left_1px"
+										id="floatingInput" placeholder="name@example.com">
+									<input type="password" name="confirm"
+										class="form-control rounded-3" id="floatingPassword"
+										placeholder="Password">
+									<label for="floatingPassword">Password and confirm</label>
+								</div>
+
+
+
+								<div class="form-floating mb-3">
+									<input type="text" name="email" class="form-control rounded-3"
+										id="floatingPassword" placeholder="Password">
+									<label for="floatingPassword">Email</label>
+								</div>
+
+
+								<div class="form-floating mb-3">
+									<input type="text" name="phone" class="form-control rounded-3"
+										id="floatingPassword" placeholder="Password">
+									<label for="floatingPassword">Phone</label>
+								</div>
+
+
+								<button
+									class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-primary"
+									type="submit">Registration</button>
+								<small class="text-muted">By clicking button, you agree
+									to the terms of use.</small>
+								<hr class="my-4">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<hr class="mb-4">
+	</div>
+
+
+</body>
+</html>
