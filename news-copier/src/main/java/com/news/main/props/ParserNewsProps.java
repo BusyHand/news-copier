@@ -25,7 +25,7 @@ public class ParserNewsProps {
 
 	private String authorOfNewsFromVKGroups = "FROM VK GROUP";
 
-	private final int count = 3;
+	private final int count = 10;
 
 	// Secret tsss
 	private final String access_token = "&access_token=d3e0676dd3e0676dd3e0676d8fd39c1c9fdd3e0d3e0676db19339468933cf2ab2aec2d0";
